@@ -580,6 +580,7 @@ copy "$(SolutionDir)lib\glew-2.1.0\bin\Release\Win32\glfw32.dll" "$(TargetDir)gl
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Event.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="VkCore_ModelLoader.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="VkCore_Camera.cpp" />

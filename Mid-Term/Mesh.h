@@ -73,6 +73,13 @@ class Mesh {
 public:
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
+
+    VkBuffer indexBuffer;
+    VkBuffer vertexBuffer;
+
+    VkDeviceMemory vertexBufferMemory;
+    VkDeviceMemory indexBufferMemory;
+
     Mesh(std::vector<Vertex> v, std::vector<unsigned int> i) {
         this->vertices = v;
         this->indices = i;

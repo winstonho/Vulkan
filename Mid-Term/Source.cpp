@@ -113,10 +113,7 @@ struct SimplePushConstantData {
     glm::mat4 modelMatrix{ 1.f };
 };
 
-struct Model {
-    VkBuffer indexBuffer;
-    VkBuffer vertexBuffer;
-};
+
 
 struct TransformComponent {
     
@@ -154,7 +151,7 @@ struct TransformComponent {
 };
 
 struct GameObject {
-    Model* model;
+    Mesh * model = nullptr;
     TransformComponent transform{};
 };
 
@@ -178,7 +175,7 @@ private:
 
     VkHelper::Instance _instance{};
     VkHelper::Camera camera{};
-    Model model;
+
     GameObject gameobject;
 
     VkInstance instance;
@@ -223,9 +220,7 @@ private:
 
 
 
-    VkDeviceMemory vertexBufferMemory;
-    //VkBuffer indexBuffer;
-    VkDeviceMemory indexBufferMemory;
+    
 
     std::vector<VkBuffer> uniformBuffers;
     std::vector<VkDeviceMemory> uniformBuffersMemory;
@@ -290,16 +285,53 @@ private:
 
    void InitGameData()
    {
+       
+
+       LoadModel();
+
+       auto& meshlist = loader.GetAllMesh();
+
+       if (meshlist.size() == 0)
+       {
+           std::cout << "no mesh loader" << std::endl;
+       }
+
        gameObj.clear();
        gameObj.resize(2);
+
+       if (meshlist.size() >= 1)
+       {
+           gameObj[0].model = &meshlist[0];
+       }
+
+       if (meshlist.size() >= 2)
+       {
+           gameObj[1].model = &meshlist[1];
+       }
+
+
        gameObj[1].transform.translation = glm::vec3(2.0, 2.0, 2.0);
 
        camera.Position = glm::vec3(0.0, 0.0, 10.0);
+
+   }
+
+   bool LoadModel()
+   {
        loader.Load("../Resource/obj/cube.obj");
+       loader.Load("../Resource/obj/sphere.obj");
+
+       for (auto& elem : loader.GetAllMesh())
+       {
+           createVertexBuffer(&elem);
+           createIndexBuffer(&elem);
+
+       }
 
        if (loader.GetFirstMesh() == nullptr)
            std::cout << "error loading mesh" << std::endl;
    }
+
     
    void UpdateGameData()
    {
@@ -314,7 +346,7 @@ private:
 
     void initVulkan() {
 
-        InitGameData();
+     
 
         _instance.CreateInstance();
         setupDebugMessenger();
@@ -332,14 +364,13 @@ private:
         //createTextureImage();
         //createTextureImageView();
         //createTextureSampler();
-        //loadModel();
-        createVertexBuffer();
-        createIndexBuffer();
+
         createUniformBuffers();
         createDescriptorPool();
         createDescriptorSets();
         createCommandBuffers();
         createSemaphores();
+        InitGameData();
         
         while (pWindow->running){
             MSG msg = {};
@@ -387,7 +418,6 @@ private:
 
         vkDestroySwapchainKHR(device, swapChain, nullptr);
     }
-
     void cleanup() {
         cleanupSwapChain();
 
@@ -405,10 +435,15 @@ private:
             vkDestroyFence(device, inFlightFences[i], nullptr);
         }
 
-        vkDestroyBuffer(device, model.indexBuffer, nullptr);
-        vkDestroyBuffer(device, model.vertexBuffer, nullptr);
-        vkFreeMemory(device, indexBufferMemory, nullptr);
-        vkFreeMemory(device, vertexBufferMemory, nullptr);
+        for (auto& elem : loader.GetAllMesh())
+        {
+            vkDestroyBuffer(device, elem.indexBuffer, nullptr);
+            vkDestroyBuffer(device, elem.vertexBuffer, nullptr);
+            vkFreeMemory(device, elem.indexBufferMemory, nullptr);
+            vkFreeMemory(device, elem.vertexBufferMemory, nullptr);
+        }
+
+       
 
         vkDestroyCommandPool(device, commandPool, nullptr);
         vkDestroyDevice(device, nullptr);
@@ -1188,9 +1223,10 @@ private:
         endSingleTimeCommands(commandBuffer);
     }
         
-    void createVertexBuffer() {
+    bool createVertexBuffer(Mesh * mesh) {
         
-        auto mesh = loader.GetFirstMesh();
+        if (mesh == nullptr)return false;
+
         VkDeviceSize bufferSize = sizeof(mesh->vertices[0]) * mesh->vertices.size();
 
         VkBuffer stagingBuffer;
@@ -1202,17 +1238,19 @@ private:
         memcpy(data, mesh->vertices.data(), (size_t)bufferSize);
         vkUnmapMemory(device, stagingBufferMemory);
 
-        createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, model.vertexBuffer, vertexBufferMemory);
+        createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, mesh->vertexBuffer, mesh->vertexBufferMemory);
 
-        copyBuffer(stagingBuffer, model.vertexBuffer, bufferSize);
+        copyBuffer(stagingBuffer, mesh->vertexBuffer, bufferSize);
 
         vkDestroyBuffer(device, stagingBuffer, nullptr);
         vkFreeMemory(device, stagingBufferMemory, nullptr);
+
+        return true;
     }
 
-    void createIndexBuffer() {
+    bool createIndexBuffer(Mesh* mesh) {
 
-        auto mesh = loader.GetFirstMesh();
+        if (mesh == nullptr)return false;
 
         VkDeviceSize bufferSize = sizeof(mesh->indices[0]) * mesh->indices.size();
 
@@ -1225,12 +1263,14 @@ private:
         memcpy(data, mesh->indices.data(), (size_t)bufferSize);
         vkUnmapMemory(device, stagingBufferMemory);
 
-        createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, model.indexBuffer, indexBufferMemory);
+        createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, mesh->indexBuffer, mesh->indexBufferMemory);
 
-        copyBuffer(stagingBuffer, model.indexBuffer, bufferSize);
+        copyBuffer(stagingBuffer, mesh->indexBuffer, bufferSize);
 
         vkDestroyBuffer(device, stagingBuffer, nullptr);
         vkFreeMemory(device, stagingBufferMemory, nullptr);
+
+        return true;
     }
 
     void createUniformBuffers() {
@@ -1406,7 +1446,6 @@ private:
     }
 
     void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex) {
-        auto mesh = loader.GetFirstMesh();
         VkCommandBufferBeginInfo beginInfo{};
         beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
@@ -1442,7 +1481,7 @@ private:
 
             vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &descriptorSets[currentFrame], 0, nullptr);
 
-            VkBuffer vertexBuffers[] = { model.vertexBuffer };
+          
             VkDeviceSize offsets[] = { 0 };
 
             //static auto startTime = std::chrono::high_resolution_clock::now();
@@ -1452,7 +1491,12 @@ private:
             //for (int i = 0; i < 2; ++i)
             for (auto& obj : gameObj)
             {
-                SimplePushConstantData push{};
+             
+                if (obj.model == nullptr)return;
+
+                SimplePushConstantData push{}; 
+                VkBuffer buffers[] = { obj.model->vertexBuffer };
+
                 //push.modelMatrix = glm::scale(glm::mat4(1.0f), { 0.5f, 0.5f, 0.5f }) * glm::translate(glm::mat4(1.0f), { i *2, i *2, i*2 }) ;
                 /*obj.transform.scale = glm::vec3(0.5f, 0.5f, 0.5f);
                 obj.transform.translation = glm::vec3(0.5f, 0.5f, 0.5f);
@@ -1463,11 +1507,11 @@ private:
                 //push.modelMatrix = glm::scale(glm::mat4(1.0f), { 0.5f, 0.5f, 0.5f }) * glm::rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 
                 vkCmdPushConstants(commandBuffer, pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(SimplePushConstantData), &push);
-                vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
+                vkCmdBindVertexBuffers(commandBuffer, 0, 1, buffers, offsets);
 
-                vkCmdBindIndexBuffer(commandBuffer, model.indexBuffer, 0, VK_INDEX_TYPE_UINT32);
-
-                vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(mesh->indices.size()), 1, 0, 0, 0);
+                vkCmdBindIndexBuffer(commandBuffer, obj.model->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+            
+                vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(obj.model->indices.size()), 1, 0, 0, 0);
                 
             }
 

@@ -18,6 +18,10 @@ namespace VkHelper {
         bool Load(std::string Filename) noexcept;
         //void Draw( xgpu::cmd_buffer& CommandBuffer ) noexcept;
         Mesh* GetFirstMesh();
+        std::vector<Mesh>& GetAllMesh()
+        {
+            return m_Meshes;
+        }
     private:
 
         Mesh					ProcessMesh(const aiMesh& Mesh, const aiScene& Scene) noexcept;
