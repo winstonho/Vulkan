@@ -1955,20 +1955,23 @@ void HelloTriangleApplication::InputCallback(const VkHelper::Event e)
     case VkHelper::EventType::MouseWheel:
     {
         //if (e.data.mouseWheel.type )
+        //e.data.mouseWheel.delta
     }
+    case VkHelper::EventType::MouseMove:
+    {
+        if (isPressed)
+        {
+            std::cout << e.data.mouseMove.deltax << ":" << e.data.mouseMove.deltay << std::endl;
+        }
+    }
+    break;
     case VkHelper::EventType::MouseInput:
     {
         // IsTriggered
-        while (e.data.mouseInput.button == VkHelper::MouseInput::Left)
+        std::cout << "press or release" << std::endl;
+        if (e.data.mouseInput.button == VkHelper::MouseInput::Left)
         {
-            isPressed = true;
-
-            if (e.data.mouseMove.screenx < e.data.mouseMove.x)
-            {
-                std::cout << "AHHHH" << std::endl;
-            }
-
-
+            isPressed = e.data.mouseInput.state == VkHelper::ButtonState::Pressed;
         }
     }
     break;
