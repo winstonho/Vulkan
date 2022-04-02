@@ -1,26 +1,43 @@
 #version 450
 
-layout(binding = 0) uniform UniformBufferObject {
-    mat4 view;
-    mat4 proj;
-} ubo;
+#extension GL_ARB_separate_shader_objects  : enable
+#extension GL_ARB_shading_language_420pack : enable
 
-layout(location = 0) in vec3 inPosition;
-layout(location = 1) in vec3 inColor;
-layout(location = 2) in vec2 inuv;
-layout(location = 3) in vec3 bitangents;
-layout(location = 4) in vec3 tangents;
-layout(location = 5) in vec3 normal;
+layout (location = 0) in vec3 inPos;        //[INPUT_POSITION]
+layout (location = 1) in vec2 inUV;         //[INPUT_UVS]
+layout (location = 2) in vec3 inTangent;    //[INPUT_TANGENT]
+layout (location = 3) in vec3 inNormal;     //[INPUT_NORMAL]
+layout (location = 4) in vec4 inColor;      //[INPUT_COLOR]
 
+layout (push_constant) uniform PushConsts 
+{
+    mat4  L2C;
+    vec4  LocalSpaceLightPos;
+    vec4  LocalSpaceEyePos;
+	vec4  AmbientLightColor;
+	vec4  LightColor;
+} pushConsts;
 
-layout(location = 0) out vec3 fragColor;
+layout(location = 0) out struct 
+{ 
+    mat3  BTN;
+    vec4  VertColor;
+	vec3  LocalSpacePosition;
+    vec2  UV; 
+} Out;
 
-layout(push_constant) uniform Push {
-  mat4 model;
-} push;
+void main() 
+{
+	const float Gamma = pushConsts.LocalSpaceEyePos.w;
 
-void main() {
-    gl_Position = ubo.proj * ubo.view * push.model * vec4(inPosition, 1.0);
-    fragColor = inColor;
+    // Decompress the binormal
+    vec3 Binormal               = normalize(cross(inTangent, inNormal));
 
+    // Compute lighting information
+    Out.BTN                     = mat3(inTangent, Binormal, inNormal);
+    Out.LocalSpacePosition      = inPos;
+    Out.VertColor               = pow( inColor, Gamma.rrrr );    // SRGB to RGB
+    Out.UV                      = inUV;
+
+    gl_Position                 = pushConsts.L2C * vec4(inPos.xyz, 1.0);
 }

@@ -65,15 +65,6 @@ namespace VkHelper {
 
             Vertex.color = glm::vec3(1.0f, 1.0f, 1.0f);
 
-            if (mesh.mBitangents)
-            {
-                Vertex.bitangents = glm::vec3
-                (static_cast<float>(mesh.mBitangents->x)
-                    , static_cast<float>(mesh.mBitangents->y),
-                    static_cast<float>(mesh.mBitangents->z)
-                );
-            }
-
             if (mesh.mTangents)
             {
                 Vertex.tangents = glm::vec3
