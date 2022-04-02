@@ -579,8 +579,10 @@ copy "$(SolutionDir)lib\glew-2.1.0\bin\Release\Win32\glfw32.dll" "$(TargetDir)gl
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DDSLoader.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="VkCore_Bitmap.cpp" />
     <ClCompile Include="VkCore_ModelLoader.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="VkCore_Camera.cpp" />
@@ -590,8 +592,10 @@ copy "$(SolutionDir)lib\glew-2.1.0\bin\Release\Win32\glfw32.dll" "$(TargetDir)gl
     <ClCompile Include="VkCore_WindowCopy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DDSLoader.h" />
     <ClInclude Include="Event.hpp" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="VkCore_Bitmap.h" />
     <ClInclude Include="VkCore_ModelLoader.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="VkCore_Camera.hpp" />
