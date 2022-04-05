@@ -1,3 +1,4 @@
+#pragma once
 #include <span>
 #include <array>
 #include <memory>
@@ -58,24 +59,6 @@ namespace VkHelper
             , ASYNC
         };
 
-        struct texture_handle
-        {
-            virtual                                    ~texture_handle(void)                          noexcept = default;
-            virtual std::array<int, 3>                  getTextureDimensions(void)                  const   noexcept = 0;
-            virtual int getMipCount(void)                  const   noexcept = 0;
-            virtual Texture::format getFormat(void)                  const   noexcept = 0;
-
-            //std::shared_ptr<VkHelper::Device> m_Device{};
-            //VkImage                         m_VKImage{};
-            //VkImageView                     m_VKView{};
-            //VkDeviceMemory                  m_VKDeviceMemory{};
-            std::uint16_t                   m_Width{};
-            std::uint16_t                   m_Height{};
-            std::uint16_t                   m_ArrayCount{};
-            std::uint8_t                    m_nMips{};
-            Texture::format                 m_Format{};
-        };
-
         struct setup
         {
             struct mip
@@ -95,6 +78,30 @@ namespace VkHelper
             std::span<const std::byte>  m_Data{};
         };
 
+        struct texture_handle
+        {
+                                                ~texture_handle(void)                          noexcept = default;
+             std::array<int, 3>                  getTextureDimensions(void)                  const   noexcept;
+             int getMipCount(void)                  const   noexcept;
+             Texture::format getFormat(void)                  const   noexcept;
+
+            void Init(const Texture::setup& Setup) noexcept;
+
+            VkDevice* m_Device{nullptr};
+            VkImage                         m_VKImage{};
+            VkImageView                     m_VKView{};
+            VkDeviceMemory                  m_VKDeviceMemory{};
+            VkSampler                       Sampler;
+            VkFormat                        vkFormat;
+            std::uint16_t                   m_Width{};
+            std::uint16_t                   m_Height{};
+            std::uint16_t                   m_ArrayCount{};
+            std::uint8_t                    m_nMips{};
+            Texture::format                 m_Format{};
+        };
+
+       
+
         inline
             std::array<int, 3>   getTextureDimensions(void) const noexcept;
 
@@ -105,6 +112,7 @@ namespace VkHelper
             format              getFormat(void) const noexcept;
 
         std::shared_ptr<texture_handle> m_Private;
+
     };
 
   
@@ -114,5 +122,8 @@ namespace VkHelper
         virtual                                    ~texture_instance_handle(void)                                                    noexcept = default;
 
     };
+    
 
+
+    
 }
