@@ -178,6 +178,7 @@ private:
 
     VkHelper::Instance _instance{};
     VkHelper::Camera camera{};
+    VkHelper::Texture::texture_handle _texture{};
 
     GameObject gameobject;
 
@@ -516,11 +517,13 @@ private:
 
     void cleanupSwapChain() {
      
+        _texture.DestroyTexture();
+
         vkDestroyImageView(device, depthImageView, nullptr);
         vkDestroyImage(device, depthImage, nullptr);
         vkFreeMemory(device, depthImageMemory, nullptr);
 
-       /* vkDestroyImageView(device, colorImageView, nullptr);
+      /* vkDestroyImageView(device, colorImageView, nullptr);
         vkDestroyImage(device, colorImage, nullptr);
         vkFreeMemory(device, colorImageMemory, nullptr);*/
 
@@ -561,7 +564,7 @@ private:
             vkFreeMemory(device, elem.vertexBufferMemory, nullptr);
         }
 
-       
+        
 
         vkDestroyCommandPool(device, commandPool, nullptr);
         vkDestroyDevice(device, nullptr);

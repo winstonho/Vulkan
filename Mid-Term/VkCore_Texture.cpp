@@ -140,4 +140,12 @@ namespace VkHelper
 		return m_Private->getFormat();
 	}
 
+	//-----------------------------------------------------------------------------
+	void Texture::texture_handle::DestroyTexture()
+	{
+		vkDestroyImageView(*m_Device, m_VKView, nullptr);
+		vkDestroyImage(*m_Device, m_VKImage, nullptr);
+		vkFreeMemory(*m_Device, m_VKDeviceMemory, nullptr);
+	}
+
 }

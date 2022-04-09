@@ -80,7 +80,7 @@ namespace VkHelper
 
         struct texture_handle
         {
-                                                ~texture_handle(void)                          noexcept = default;
+             //~texture_handle(void)                          noexcept = default;
              std::array<int, 3>                  getTextureDimensions(void)                  const   noexcept;
              int getMipCount(void)                  const   noexcept;
              Texture::format getFormat(void)                  const   noexcept;
@@ -98,9 +98,10 @@ namespace VkHelper
             std::uint16_t                   m_ArrayCount{};
             std::uint8_t                    m_nMips{};
             Texture::format                 m_Format{};
+            //virtual ~texture_handle(void) noexcept = default;
+            void DestroyTexture();
         };
 
-       
 
         inline
             std::array<int, 3>   getTextureDimensions(void) const noexcept;
@@ -122,8 +123,6 @@ namespace VkHelper
         virtual                                    ~texture_instance_handle(void)                                                    noexcept = default;
 
     };
-    
-
 
     
 }
