@@ -86,8 +86,6 @@ namespace VkHelper
              Texture::format getFormat(void)                  const   noexcept;
 
             void Init(const Texture::setup& Setup) noexcept;
-
-            VkDevice* m_Device{nullptr};
             VkImage                         m_VKImage{};
             VkImageView                     m_VKView{};
             VkDeviceMemory                  m_VKDeviceMemory{};
@@ -99,7 +97,7 @@ namespace VkHelper
             std::uint8_t                    m_nMips{};
             Texture::format                 m_Format{};
             //virtual ~texture_handle(void) noexcept = default;
-            void DestroyTexture();
+            void DestroyTexture(VkDevice &device);
         };
 
 

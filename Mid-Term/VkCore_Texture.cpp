@@ -141,11 +141,13 @@ namespace VkHelper
 	}
 
 	//-----------------------------------------------------------------------------
-	void Texture::texture_handle::DestroyTexture()
+	void Texture::texture_handle::DestroyTexture(VkDevice& device)
 	{
-		vkDestroyImageView(*m_Device, m_VKView, nullptr);
-		vkDestroyImage(*m_Device, m_VKImage, nullptr);
-		vkFreeMemory(*m_Device, m_VKDeviceMemory, nullptr);
+		vkDestroyImageView(device, m_VKView, nullptr);
+		vkDestroyImage(device, m_VKImage, nullptr);
+		vkFreeMemory(device, m_VKDeviceMemory, nullptr);
+		vkDestroySampler(device, Sampler, nullptr);
+		
 	}
 
 }

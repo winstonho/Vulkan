@@ -178,7 +178,7 @@ private:
 
     VkHelper::Instance _instance{};
     VkHelper::Camera camera{};
-    VkHelper::Texture::texture_handle _texture{};
+
 
     GameObject gameobject;
 
@@ -517,8 +517,9 @@ private:
 
     void cleanupSwapChain() {
      
-        _texture.DestroyTexture();
+     
 
+      
         vkDestroyImageView(device, depthImageView, nullptr);
         vkDestroyImage(device, depthImage, nullptr);
         vkFreeMemory(device, depthImageMemory, nullptr);
@@ -564,6 +565,12 @@ private:
             vkFreeMemory(device, elem.vertexBufferMemory, nullptr);
         }
 
+        NormalTexture.DestroyTexture(device);
+        DiffuseTexture.DestroyTexture(device);
+        AOTexture.DestroyTexture(device);
+        GlossinessTexture.DestroyTexture(device);
+        RoughnessTexture.DestroyTexture(device);
+
         
 
         vkDestroyCommandPool(device, commandPool, nullptr);
@@ -574,12 +581,9 @@ private:
         }
 
         vkDestroySurfaceKHR(_instance.vkinstance, surface, nullptr);
-        //vkDestroyInstance(_instance.vkinstance, nullptr);
         _instance.~Instance();
 
-        //glfwDestroyWindow(window);
 
-        //glfwTerminate();
 
     }
 
@@ -604,45 +608,7 @@ private:
     }
 
     void createInstance() {
-      /*  if (enableValidationLayers && !checkValidationLayerSupport()) {
-            throw std::runtime_error("validation layers requested, but not available!");
-        }*/
-
-       /* VkApplicationInfo appInfo{};
-        appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-        appInfo.pApplicationName = "Hello Triangle";
-        appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
-        appInfo.pEngineName = "No Engine";
-        appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
-        appInfo.apiVersion = VK_API_VERSION_1_0;
-
-        VkInstanceCreateInfo createInfo{};
-        createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-        createInfo.pApplicationInfo = &appInfo;
-
-        auto extensions = getRequiredExtensions();
-        createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
-        createInfo.ppEnabledExtensionNames = extensions.data();
-
-        VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
-        if (enableValidationLayers) {
-            createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
-            createInfo.ppEnabledLayerNames = validationLayers.data();
-
-            populateDebugMessengerCreateInfo(debugCreateInfo);
-            createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&debugCreateInfo;
-        }
-        else {
-        const char* instance_layers[layer_count] = { "VK_LAYER_LUNARG_standard_validation" };
-
-        // Check to see if we have the layer requirments
-        assert(VkHelper::CheckLayersSupport(instance_layers, 1) && "Unsupported Layers Found");
-
-            createInfo.enabledLayerCount = 0;
-
-            createInfo.pNext = nullptr;
-        }*/
-
+ 
         // Define what Layers and Extentions we require
         const uint32_t extention_count = 3;
         const char* instance_extensions[extention_count] = { "VK_EXT_debug_report" , VK_KHR_SURFACE_EXTENSION_NAME, VK_KHR_WIN32_SURFACE_EXTENSION_NAME };
@@ -821,28 +787,7 @@ private:
     }
 
     void createImageViews() {
-        /*swapChainImageViews.resize(swapChainImages.size());
-
-        for (size_t i = 0; i < swapChainImages.size(); i++) {
-            VkImageViewCreateInfo createInfo{};
-            createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-            createInfo.image = swapChainImages[i];
-            createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-            createInfo.format = swapChainImageFormat;
-            createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
-            createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
-            createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
-            createInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
-            createInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-            createInfo.subresourceRange.baseMipLevel = 0;
-            createInfo.subresourceRange.levelCount = 1;
-            createInfo.subresourceRange.baseArrayLayer = 0;
-            createInfo.subresourceRange.layerCount = 1;
-
-            if (vkCreateImageView(device, &createInfo, nullptr, &swapChainImageViews[i]) != VK_SUCCESS) {
-                throw std::runtime_error("failed to create image views!");
-            }
-        }*/
+       
 
         swapChainImageViews.resize(swapChainImages.size());
 
