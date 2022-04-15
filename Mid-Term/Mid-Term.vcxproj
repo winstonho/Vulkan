@@ -291,6 +291,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)lib\glfw-3.3.4.bin.WIN32\include;$(SolutionDir)lib\glew-2.1.0\include;$(SolutionDir)lib\glm-0.9.9.7;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)lib\glew-2.1.0\lib\Release\Win32;$(SolutionDir)lib\glfw-3.3.4.bin.WIN32\lib-vc2019;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -452,7 +454,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(VULKAN_SDK)/Lib/vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(VULKAN_SDK)/Lib/vulkan-1.lib;%(AdditionalDependencies);opengl32.lib;glew32.lib;glfw3dll.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
@@ -491,7 +493,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(VULKAN_SDK)/Lib/vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(VULKAN_SDK)/Lib/vulkan-1.lib;%(AdditionalDependencies);opengl32.lib;glew32.lib;glfw3dll.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -526,7 +528,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(VULKAN_SDK)/Lib/vulkan-1.lib;opengl32.lib;glew32.lib;glfw3dll.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(VULKAN_SDK)/Lib/vulkan-1.lib;opengl32.lib;glew32.lib;glfw3dll.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies);opengl32.lib;glew32.lib;glfw3dll.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>…\dependencies\glfw-3.1.2.bin.WIN64\lib-vc2013;..\lib\assimp\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
@@ -562,7 +564,7 @@ copy "$(SolutionDir)lib\glew-2.1.0\bin\Release\Win32\glfw32.dll" "$(TargetDir)gl
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>%VULKAN_SDK%\Include;..\VkCore\header</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../lib;..\lib\tinyobjloader;..\lib\tinyddsloader;%VULKAN_SDK%\Include;..\VkCore\header</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -570,8 +572,8 @@ copy "$(SolutionDir)lib\glew-2.1.0\bin\Release\Win32\glfw32.dll" "$(TargetDir)gl
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(VULKAN_SDK)/Lib/vulkan-1.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\lib\assimp\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(VULKAN_SDK)/Lib/vulkan-1.lib;opengl32.lib;glfw3dll.lib;glew32.lib;assimp-vc142-mt.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>…\dependencies\glfw-3.1.2.bin.WIN64\lib-vc2013;..\lib\assimp\lib\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>%VULKAN_SDK%/Bin/glslc.exe ../shaders/shader.vert -o ../shaders/vert.spv
