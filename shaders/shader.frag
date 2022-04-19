@@ -12,7 +12,7 @@ layout(location = 0) in struct
 { 
     mat3  BTN;
     vec4  VertColor;
-	vec3  LocalSpacePosition;
+    vec3  LocalSpacePosition;
     vec2  UV; 
 } In;
 
@@ -21,8 +21,8 @@ layout (push_constant) uniform PushConsts
     mat4  L2C;
     vec4  LocalSpaceLightPos;
     vec4  LocalSpaceEyePos;
-	vec4  AmbientLightColor;
-	vec4  LightColor;
+    vec4  AmbientLightColor;
+    vec4  LightColor;
 } pushConsts;
 
 layout (location = 0)   out         vec4        outFragColor;
@@ -58,15 +58,11 @@ void main()
 	// Determine the power for the specular based on how rough something is
 	const float Shininess = mix( 1, 100, 1 - texture( SamplerRoughnessMap, In.UV).r );
 
-	// The old way to Compute Specular "PHONG"
-	// Reflection == I - 2.0 * dot(N, I) * N // Where N = Normal, I = LightDirectioh
-	float SpecularI1  = pow( max(0, dot( reflect(LightDirection, Normal), EyeDirection )), Shininess );
-
 	// Another way to compute specular "BLINN-PHONG" (https://learnopengl.com/Advanced-Lighting/Advanced-Lighting)
 	float SpecularI2  = pow( max( 0, dot(Normal, normalize( LightDirection - EyeDirection ))), Shininess );
 
 	// Read the diffuse color
-	vec4 DiffuseColor	= texture(SamplerDiffuseMap, In.UV) * In.VertColor;
+	vec4 DiffuseColor	= texture(SamplerDiffuseMap, In.UV);// * In.VertColor;
 
 	// Set the global constribution
 	outFragColor.rgb  = pushConsts.AmbientLightColor.rgb * DiffuseColor.rgb * texture(SamplerAOMap, In.UV).rgb;
@@ -76,8 +72,8 @@ void main()
 
 	// Convert to gamma
 	const float Gamma = pushConsts.LocalSpaceEyePos.w;
-	outFragColor.a   = DiffuseColor.a;
-	outFragColor.rgb = pow( outFragColor.rgb, vec3(1.0f/Gamma) );
+	outFragColor.a   = 1;//DiffuseColor.a;
+	outFragColor.rgb = pow( outFragColor.rgb, vec3(1.0f/Gamma) );  //DiffuseColor.rgb; // Normal.rgb * vec3(0.5f) + vec3(0.5f) ;//
 }
 
 

@@ -306,7 +306,7 @@ private:
 
        return "";
    }
-
+   
    void LoadTexture()
    {
         //
@@ -335,7 +335,7 @@ private:
         }
 
         //
-        // Load Normal Texture
+        // Load Base Texture
         //
         {
             VkHelper::bitmap Bitmap;
@@ -471,6 +471,9 @@ private:
       // gameObj[1].transform.rotation.x += 0.1f * fixDt;
       // gameObj[1].transform.rotation.y += 0.1f * fixDt;
       // gameObj[1].transform.rotation.z += 0.1f * fixDt;
+
+       gameObj[0].transform.rotation.x = 1.5f;
+       gameObj[0].transform.rotation.y = 3.f;
 
        camera.setPerspectiveProjection(glm::radians(camera.FOV), swapChainExtent.width / (float)swapChainExtent.height, 0.1, 100.0f);
        camera.setViewYXZ(camera.Position, camera.Rotation);
@@ -968,15 +971,15 @@ private:
         viewportState.pViewports = &viewport;
         viewportState.scissorCount = 1;
         viewportState.pScissors = &scissor;
-
+        
         VkPipelineRasterizationStateCreateInfo rasterizer{};
         rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
         rasterizer.depthClampEnable = VK_FALSE;
         rasterizer.rasterizerDiscardEnable = VK_FALSE;
         rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
         rasterizer.lineWidth = 1.0f;
-        rasterizer.cullMode = VK_CULL_MODE_NONE;  //VK_CULL_MODE_BACK_BIT;
-        rasterizer.frontFace = VK_FRONT_FACE_CLOCKWISE;
+        rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
+        rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
         rasterizer.depthBiasEnable = VK_FALSE;
 
         VkPipelineMultisampleStateCreateInfo multisampling{};
@@ -1138,7 +1141,8 @@ private:
         VkDeviceMemory stagingBufferMemory;
 
         //std::cout << setup.m_Data.size() << " is imageSize.\n";
-        createBuffer(setup.m_Data.size(), VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBuffer, stagingBufferMemory);
+        createBuffer(setup.m_Data.size(), VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBuffer
+            , stagingBufferMemory);
 
         void* data;
         vkMapMemory(device, stagingBufferMemory, 0, setup.m_Data.size(), 0, &data);
@@ -1593,17 +1597,20 @@ private:
 
                 glm::mat4 L2W(1.0f);
 
-                W2C = camera.getProjection() * camera.getView()  *obj.transform.mat4() ;
+
+
+                W2C = camera.getProjection() * camera.getView();// *obj.transform.mat4();
 
                 // Take the light to local space of the object
                 auto W2L = L2W;
                 W2L = glm::inverse(W2L);
       
                 PushConstants.m_L2C = W2C * L2W;
-                PushConstants.m_LocalSpaceEyePos = W2L * camera.getView()[3];
+                PushConstants.m_LocalSpaceEyePos = W2L * glm::vec4(camera.Position, 1.0f); // camera.getView()[3];
                 PushConstants.m_LocalSpaceLightPos = W2L * LightPosition;
-                PushConstants.m_AmbientLightColor = glm::vec4(0.05f, 0.05f, 0.05f, 1.0f);
-                PushConstants.m_LightColor = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f);
+                PushConstants.m_AmbientLightColor = glm::vec4(0.08f, 0.08f, 0.08f, 1.00f);
+                //PushConstants.m_AmbientLightColor = glm::vec4(1.05f, 1.05f, 1.05f, 500.0f);
+                PushConstants.m_LightColor = glm::vec4(0.05f, 0.05f, 0.05f, 0.50f);
                 PushConstants.m_LocalSpaceEyePos.w = 2.2f;  // We store gamma in the w component of the eye
 
 

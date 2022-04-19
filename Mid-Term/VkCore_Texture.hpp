@@ -28,7 +28,7 @@ namespace VkHelper
             , BC1_4RGBA1
             , BC2_8RGBA
             , BC3_8RGBA
-            , BC4_4R
+//            , BC4_4R
             , BC5_8RG
             , BC6H_8RGB_FLOAT
             , BC7_8RGBA

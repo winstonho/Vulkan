@@ -60,7 +60,7 @@ namespace VkHelper
 			FormatTable[(int)Texture::format::BC1_4RGBA1] = texture_format{ VK_FORMAT_BC1_RGBA_UNORM_BLOCK      , VK_FORMAT_UNDEFINED                  , VK_FORMAT_BC1_RGBA_SRGB_BLOCK };
 			FormatTable[(int)Texture::format::BC2_8RGBA] = texture_format{ VK_FORMAT_BC2_UNORM_BLOCK           , VK_FORMAT_UNDEFINED                  , VK_FORMAT_BC2_SRGB_BLOCK };
 			FormatTable[(int)Texture::format::BC3_8RGBA] = texture_format{ VK_FORMAT_BC3_UNORM_BLOCK           , VK_FORMAT_UNDEFINED                  , VK_FORMAT_BC3_SRGB_BLOCK };
-			FormatTable[(int)Texture::format::BC4_4R] = texture_format{ VK_FORMAT_BC4_UNORM_BLOCK           , VK_FORMAT_BC4_SNORM_BLOCK            , VK_FORMAT_UNDEFINED };
+			//FormatTable[(int)Texture::format::BC4_4R] = texture_format{ VK_FORMAT_BC4_UNORM_BLOCK           , VK_FORMAT_BC4_SNORM_BLOCK            , VK_FORMAT_UNDEFINED };
 			FormatTable[(int)Texture::format::BC5_8RG] = texture_format{ VK_FORMAT_BC5_UNORM_BLOCK           , VK_FORMAT_BC5_SNORM_BLOCK            , VK_FORMAT_UNDEFINED };
 			FormatTable[(int)Texture::format::BC6H_8RGB_FLOAT] = texture_format{ VK_FORMAT_BC6H_UFLOAT_BLOCK         , VK_FORMAT_BC6H_SFLOAT_BLOCK          , VK_FORMAT_UNDEFINED };
 			FormatTable[(int)Texture::format::BC7_8RGBA] = texture_format{ VK_FORMAT_BC7_UNORM_BLOCK           , VK_FORMAT_UNDEFINED                  , VK_FORMAT_BC7_SRGB_BLOCK };

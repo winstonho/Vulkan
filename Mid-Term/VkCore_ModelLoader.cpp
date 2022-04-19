@@ -9,6 +9,7 @@ namespace VkHelper {
         auto Importer = std::make_unique<Assimp::Importer>();
 
         const aiScene* pScene = Importer->ReadFile(Filename
+            /*
             , aiProcess_Triangulate                // Make sure we get triangles rather than nvert polygons
             | aiProcess_LimitBoneWeights           // 4 weights for skin model max
             | aiProcess_GenUVCoords                // Convert any type of mapping to uv mapping
@@ -18,19 +19,34 @@ namespace VkHelper {
             | aiProcess_JoinIdenticalVertices      // join identical vertices/ optimize indexing
             | aiProcess_RemoveRedundantMaterials   // remove redundant materials
             | aiProcess_FindInvalidData            // detect invalid model data, such as invalid normal vectors
-            | aiProcess_FindDegenerates |
-            aiProcess_FindInvalidData |
-            aiProcess_ImproveCacheLocality |
-            aiProcess_JoinIdenticalVertices |
-            aiProcess_OptimizeGraph |
-            aiProcess_OptimizeMeshes |
-            aiProcess_RemoveRedundantMaterials |
-            aiProcess_SortByPType |
-            aiProcess_Triangulate |
-            aiProcess_RemoveComponent |
-            aiProcess_FlipUVs |
-            aiProcess_ValidateDataStructure |
-            aiProcess_MakeLeftHanded
+            | aiProcess_FindDegenerates 
+            | aiProcess_FindInvalidData 
+            | aiProcess_ImproveCacheLocality 
+            | aiProcess_JoinIdenticalVertices 
+            | aiProcess_OptimizeGraph 
+            | aiProcess_OptimizeMeshes 
+            | aiProcess_RemoveRedundantMaterials 
+            | aiProcess_SortByPType 
+            | aiProcess_Triangulate 
+            | aiProcess_RemoveComponent 
+            | aiProcess_FlipUVs 
+            | aiProcess_ValidateDataStructure 
+            | aiProcess_MakeLeftHanded
+            */
+
+            
+            , aiProcess_Triangulate                // Make sure we get triangles rather than nvert polygons
+            | aiProcess_LimitBoneWeights           // 4 weights for skin model max
+            | aiProcess_GenUVCoords                // Convert any type of mapping to uv mapping
+            | aiProcess_TransformUVCoords          // preprocess UV transformations (scaling, translation ...)
+            | aiProcess_FindInstances              // search for instanced meshes and remove them by references to one master
+            | aiProcess_CalcTangentSpace           // calculate tangents and bitangents if possible
+            | aiProcess_JoinIdenticalVertices      // join identical vertices/ optimize indexing
+            | aiProcess_RemoveRedundantMaterials   // remove redundant materials
+            | aiProcess_FindInvalidData            // detect invalid model data, such as invalid normal vectors
+            | aiProcess_PreTransformVertices       // pre-transform all vertices
+            | aiProcess_FlipUVs                    // flip the V to match the Vulkans way of doing UVs
+            
         );
 
         if (pScene == nullptr)
@@ -63,9 +79,9 @@ namespace VkHelper {
             Vertex Vertex;
 
             Vertex.pos = glm::vec3
-            (static_cast<float>(mesh.mVertices[i].x)
-                , static_cast<float>(mesh.mVertices[i].y)
-                , static_cast<float>(mesh.mVertices[i].z)
+            (static_cast<float>(mesh.mVertices[i].x * 0.02f)
+                , static_cast<float>(mesh.mVertices[i].y * 0.02f)
+                , static_cast<float>(mesh.mVertices[i].z * 0.02f)
             );
 
             if (mesh.mTextureCoords[0])
@@ -76,14 +92,14 @@ namespace VkHelper {
                 );
             }
 
-            Vertex.color = glm::vec3(1.0f, 1.0f, 1.0f);
+            Vertex.color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
             if (mesh.mTangents)
             {
                 Vertex.tangents = glm::vec3
-                (static_cast<float>(mesh.mTangents->x)
-                    , static_cast<float>(mesh.mTangents->y),
-                    static_cast<float>(mesh.mTangents->z)
+                (static_cast<float>(mesh.mTangents[i].x)
+                    , static_cast<float>(mesh.mTangents[i].y),
+                    static_cast<float>(mesh.mTangents[i].z)
                 );
             }
 
@@ -91,9 +107,9 @@ namespace VkHelper {
             if (mesh.mNormals)
             {
                 Vertex.normal = glm::vec3
-                (static_cast<float>(mesh.mNormals->x)
-                    , static_cast<float>(mesh.mNormals->y),
-                    static_cast<float>(mesh.mNormals->z)
+                (static_cast<float>(mesh.mNormals[i].x)
+                    , static_cast<float>(mesh.mNormals[i].y),
+                    static_cast<float>(mesh.mNormals[i].z)
                 );
             }
 

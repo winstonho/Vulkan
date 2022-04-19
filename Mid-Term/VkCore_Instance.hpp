@@ -30,7 +30,7 @@ namespace VkHelper
 		//Functions
 		VkApplicationInfo ApplicationInfo(const char* app_name, uint32_t app_ver, const char* engine_name, uint32_t engine_ver, uint32_t api_version);
 		VkInstanceCreateInfo InstanceCreateInfo(VkApplicationInfo& app_info, const char** extensions, unsigned int extensions_count, const char** layers, unsigned int layerCount);
-		bool CreateInstance(bool renderdoc = false, bool debugmode = true);
+		bool CreateInstance(bool renderdoc = true, bool debugmode = true);
 
 		//Debugger & Checks
 		VkDebugReportCallbackEXT CreateDebugger(const VkInstance& instance);
