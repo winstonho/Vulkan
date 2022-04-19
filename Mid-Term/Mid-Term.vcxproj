@@ -581,17 +581,37 @@ copy "$(SolutionDir)lib\glew-2.1.0\bin\Release\Win32\glfw32.dll" "$(TargetDir)gl
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DDSLoader.cpp" />
+    <ClCompile Include="DDSLoader.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+    </ClCompile>
     <ClCompile Include="Event.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="VkCore_Bitmap.cpp" />
-    <ClCompile Include="VkCore_ModelLoader.cpp" />
-    <ClCompile Include="Source.cpp" />
-    <ClCompile Include="VkCore_Camera.cpp" />
-    <ClCompile Include="VkCore_instance.cpp" />
-    <ClCompile Include="VkCore_Keyboard_Mouse.cpp" />
-    <ClCompile Include="VkCore_Texture.cpp" />
-    <ClCompile Include="VkCore_WindowCopy.cpp" />
+    <ClCompile Include="Mesh.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+    </ClCompile>
+    <ClCompile Include="VkCore_Bitmap.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+    </ClCompile>
+    <ClCompile Include="VkCore_ModelLoader.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+    </ClCompile>
+    <ClCompile Include="VkCore_Camera.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+    </ClCompile>
+    <ClCompile Include="VkCore_instance.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+    </ClCompile>
+    <ClCompile Include="VkCore_Keyboard_Mouse.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+    </ClCompile>
+    <ClCompile Include="VkCore_Texture.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+    </ClCompile>
+    <ClCompile Include="VkCore_WindowCopy.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DDSLoader.h" />

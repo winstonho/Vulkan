@@ -227,7 +227,7 @@ private:
     VkHelper::Texture::texture_handle NormalTexture;
     VkHelper::Texture::texture_handle DiffuseTexture;
     VkHelper::Texture::texture_handle AOTexture;
-    VkHelper::Texture::texture_handle GlossinessTexture;
+    //VkHelper::Texture::texture_handle GlossinessTexture;
     VkHelper::Texture::texture_handle RoughnessTexture;
 
     bool framebufferResized = false;
@@ -281,7 +281,7 @@ private:
     }
 
 
-   std::string&& CreateTexture(VkHelper::Texture::texture_handle & Texture, const VkHelper::bitmap& Bitmap)
+   std::string CreateTexture(VkHelper::Texture::texture_handle & Texture, const VkHelper::bitmap& Bitmap)
    {
        VkHelper::Texture::setup                    Setup;
        std::vector<VkHelper::Texture::setup::mip>  Mips;
@@ -309,8 +309,6 @@ private:
 
    void LoadTexture()
    {
-
-        
         //
         // Load Normal Texture
         //
@@ -321,7 +319,11 @@ private:
             // Load file
             //
   
-            std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/StoneWal01_1K/Stone Wall 01_1K_Normal - Compress BC5.dds") << std::endl;
+            //std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/StoneWal01_1K/Stone Wall 01_1K_Normal - Compress BC5.dds") << std::endl;
+            std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/demon-skull-textured/textures/TD_Checker_Normal_OpenGl.dds") << std::endl;
+
+            
+            //std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/vintage-car/textures/_Normal_DirectX.dds") << std::endl;
             
             Bitmap.setColorSpace( VkHelper::bitmap::color_space::LINEAR );
 
@@ -342,7 +344,9 @@ private:
             // Load file
             //
 
-            std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/StoneWal01_1K/Stone Wall 01_1K_Diffuse.dds") << std::endl;
+            //std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/StoneWal01_1K/Stone Wall 01_1K_Diffuse.dds") << std::endl;
+             std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/demon-skull-textured/textures/TD_Checker_Base_Color.dds") << std::endl;
+            //std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/vintage-car/textures/_Base_Color.dds") << std::endl;
             Bitmap.setColorSpace(VkHelper::bitmap::color_space::SRGB);
 
             //
@@ -352,16 +356,18 @@ private:
             
         }
 
-        //
-        // Load Ambient Occlusion Texture
-        //
+        
+         //Load Ambient Occlusion Texture
+        
         {
             VkHelper::bitmap Bitmap;
 
             //
             // Load file
             //
-            std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/StoneWal01_1K/Stone Wall 01_1K_Ambient Occlusion.dds") << std::endl;
+            //std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/StoneWal01_1K/Stone Wall 01_1K_Ambient Occlusion.dds") << std::endl;
+            std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/demon-skull-textured/textures/TD_Checker_Mixed_AO.dds") << std::endl;
+            //std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/vintage-car/textures/_Mixed_AO.dds") << std::endl;
             Bitmap.setColorSpace(VkHelper::bitmap::color_space::LINEAR);
 
             //
@@ -371,31 +377,34 @@ private:
             
         }
 
-        //
-        // Load Glossiness Texture
-        //
+        
+         //Load Glossiness Texture
+        
+        //{
+        //    VkHelper::bitmap Bitmap;
+
+        //    //
+        //    // Load file
+        //    //
+        //    //std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/StoneWal01_1K/Stone Wall 01_1K_Glossiness.dds") << std::endl;
+        //    //std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/vintage-car/textures/internal_ground_ao_texture.dds") << std::endl;
+        //    Bitmap.setColorSpace(VkHelper::bitmap::color_space::LINEAR);
+
+        //    //
+        //    // Create Texture
+        //    //
+        //    CreateTexture(GlossinessTexture, Bitmap);
+
+        //}
+
+        
+         //Load Roughness Texture
+        
         {
             VkHelper::bitmap Bitmap;
-
-            //
-            // Load file
-            //
-            std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/StoneWal01_1K/Stone Wall 01_1K_Glossiness.dds") << std::endl;
-            Bitmap.setColorSpace(VkHelper::bitmap::color_space::LINEAR);
-
-            //
-            // Create Texture
-            //
-            CreateTexture(GlossinessTexture, Bitmap);
-
-        }
-
-        //
-        // Load Roughness Texture
-        //
-        {
-            VkHelper::bitmap Bitmap;
-            std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/StoneWal01_1K/Stone Wall 01_1K_Roughness.dds") << std::endl;
+            //std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/StoneWal01_1K/Stone Wall 01_1K_Roughness.dds") << std::endl;
+            std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/demon-skull-textured/textures/TD_Checker_Roughness.dds") << std::endl;
+            //std::cout << VkHelper::LoadDSS(Bitmap, "../Resource/Assets/vintage-car/textures/_Roughness.dds") << std::endl;
 
             Bitmap.setColorSpace(VkHelper::bitmap::color_space::LINEAR);
             //
@@ -408,8 +417,6 @@ private:
 
    void InitGameData()
    {
-       
-
        LoadModel();
        LoadTexture();
 
@@ -433,6 +440,11 @@ private:
            gameObj[1].model = &meshlist[1];
        }
 
+       if (meshlist.size() >= 3)
+       {
+           gameObj[2].model = &meshlist[2];
+       }
+
 
        gameObj[1].transform.translation = glm::vec3(2.0, 2.0, 2.0);
 
@@ -443,8 +455,10 @@ private:
 
    bool LoadModel()
    {
-       loader.Load("../Resource/obj/cube.obj");
+       //loader.Load("../Resource/obj/cube.obj");
+       loader.Load("../Resource/Assets/demon-skull-textured/source/Skull_textured.fbx");
        loader.Load("../Resource/obj/sphere.obj");
+       //loader.Load("../Resource/Assets/vintage-car/source/_2_Vintage_Car_01_low.fbx");
 
        for (auto& elem : loader.GetAllMesh())
        {
@@ -454,7 +468,11 @@ private:
        }
 
        if (loader.GetFirstMesh() == nullptr)
+       {
            std::cout << "error loading mesh" << std::endl;
+           return false;
+       }
+       return true;
    }
 
     
@@ -568,7 +586,7 @@ private:
         NormalTexture.DestroyTexture(device);
         DiffuseTexture.DestroyTexture(device);
         AOTexture.DestroyTexture(device);
-        GlossinessTexture.DestroyTexture(device);
+        //GlossinessTexture.DestroyTexture(device);
         RoughnessTexture.DestroyTexture(device);
 
         
@@ -880,21 +898,22 @@ private:
         SamplerAOMap.pImmutableSamplers = nullptr;
         SamplerAOMap.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
 
-        VkDescriptorSetLayoutBinding SamplerGlossivessMap{};
+       /* VkDescriptorSetLayoutBinding SamplerGlossivessMap{};
         SamplerGlossivessMap.binding = 3;
         SamplerGlossivessMap.descriptorCount = 1;
         SamplerGlossivessMap.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
         SamplerGlossivessMap.pImmutableSamplers = nullptr;
-        SamplerGlossivessMap.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+        SamplerGlossivessMap.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;*/
 
         VkDescriptorSetLayoutBinding SamplerRoughnessMap{};
-        SamplerRoughnessMap.binding = 4;
+        SamplerRoughnessMap.binding = 3;
         SamplerRoughnessMap.descriptorCount = 1;
         SamplerRoughnessMap.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
         SamplerRoughnessMap.pImmutableSamplers = nullptr;
         SamplerRoughnessMap.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
 
-        std::array<VkDescriptorSetLayoutBinding, 5> bindings = { SamplerNormalMap, SamplerDiffuseMap , SamplerAOMap,SamplerGlossivessMap, SamplerRoughnessMap };
+        std::array<VkDescriptorSetLayoutBinding, 4> bindings = { SamplerNormalMap, SamplerDiffuseMap , SamplerAOMap, SamplerRoughnessMap };
+        //std::array<VkDescriptorSetLayoutBinding, 5> bindings = { SamplerNormalMap, SamplerDiffuseMap , SamplerAOMap,SamplerGlossivessMap, SamplerRoughnessMap };
         VkDescriptorSetLayoutCreateInfo layoutInfo{};
         layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
         layoutInfo.bindingCount = static_cast<uint32_t>(bindings.size());
@@ -1200,19 +1219,19 @@ private:
     void createImage(uint32_t width , uint32_t height, uint8_t mip_levels, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory) {
         std::cout << mip_levels << std::endl;
         VkImageCreateInfo imageInfo{};
-        imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-        imageInfo.imageType = VK_IMAGE_TYPE_2D;
-        imageInfo.extent.width = width;
+        imageInfo.sType         = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+        imageInfo.imageType     = VK_IMAGE_TYPE_2D;
+        imageInfo.extent.width  = width;
         imageInfo.extent.height = height;
-        imageInfo.extent.depth = 1;
-        imageInfo.mipLevels = mip_levels;
-        imageInfo.arrayLayers = 1;
-        imageInfo.format = format;
-        imageInfo.tiling = tiling;
+        imageInfo.extent.depth  = 1;
+        imageInfo.mipLevels     = mip_levels;
+        imageInfo.arrayLayers   = 1;
+        imageInfo.format        = format;
+        imageInfo.tiling        = tiling;
         imageInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-        imageInfo.usage = usage;
-        imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
-        imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+        imageInfo.usage         = usage;
+        imageInfo.samples       = VK_SAMPLE_COUNT_1_BIT;
+        imageInfo.sharingMode   = VK_SHARING_MODE_EXCLUSIVE;
 
 
         if (vkCreateImage(device, &imageInfo, nullptr, &image) != VK_SUCCESS) {
@@ -1415,15 +1434,15 @@ private:
 
         for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
             
-            std::array< VkDescriptorImageInfo, 5> DescImage;
-            std::array< VkWriteDescriptorSet, 5> WriteDes;
+            std::array< VkDescriptorImageInfo, 4> DescImage;
+            std::array< VkWriteDescriptorSet, 4> WriteDes;
 
         
             SetUpImageDescriptor(DescImage[0], WriteDes[0], 0, descriptorSets[i], NormalTexture);
             SetUpImageDescriptor(DescImage[1], WriteDes[1], 1, descriptorSets[i], DiffuseTexture);
             SetUpImageDescriptor(DescImage[2], WriteDes[2], 2, descriptorSets[i], AOTexture);
-            SetUpImageDescriptor(DescImage[3], WriteDes[3], 3, descriptorSets[i], GlossinessTexture);
-            SetUpImageDescriptor(DescImage[4], WriteDes[4], 4, descriptorSets[i], RoughnessTexture);
+            //SetUpImageDescriptor(DescImage[3], WriteDes[3], 3, descriptorSets[i], GlossinessTexture);
+            SetUpImageDescriptor(DescImage[3], WriteDes[3], 3, descriptorSets[i], RoughnessTexture);
            
             vkUpdateDescriptorSets(device, static_cast<uint32_t>(WriteDes.size()), WriteDes.data(), 0, nullptr);
         }
@@ -1594,7 +1613,7 @@ private:
                 PushConstants.m_L2C = W2C * L2W;
                 PushConstants.m_LocalSpaceEyePos = W2L * camera.getView()[3];
                 PushConstants.m_LocalSpaceLightPos = W2L * LightPosition;
-                PushConstants.m_AmbientLightColor = glm::vec4(1.00f, 1.00f, 1.0f, 1.0f);
+                PushConstants.m_AmbientLightColor = glm::vec4(0.05f, 0.05f, 0.05f, 1.0f);
                 PushConstants.m_LightColor = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f);
                 PushConstants.m_LocalSpaceEyePos.w = 2.2f;  // We store gamma in the w component of the eye
 

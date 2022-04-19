@@ -5,8 +5,8 @@
 layout (binding = 0)    uniform     sampler2D   SamplerNormalMap;		// [INPUT_TEXTURE_NORMAL]
 layout (binding = 1)    uniform     sampler2D   SamplerDiffuseMap;		// [INPUT_TEXTURE_DIFFUSE]
 layout (binding = 2)    uniform     sampler2D   SamplerAOMap;			// [INPUT_TEXTURE_AO]
-layout (binding = 3)    uniform     sampler2D   SamplerGlossivessMap;	// [INPUT_TEXTURE_GLOSSINESS]
-layout (binding = 4)    uniform     sampler2D   SamplerRoughnessMap;	// [INPUT_TEXTURE_ROUGHNESS]
+//layout (binding = 3)    uniform     sampler2D   SamplerGlossivessMap;	// [INPUT_TEXTURE_GLOSSINESS]
+layout (binding = 3)    uniform     sampler2D   SamplerRoughnessMap;	// [INPUT_TEXTURE_ROUGHNESS]
 
 layout(location = 0) in struct 
 { 
@@ -72,7 +72,7 @@ void main()
 	outFragColor.rgb  = pushConsts.AmbientLightColor.rgb * DiffuseColor.rgb * texture(SamplerAOMap, In.UV).rgb;
 
 	// Add the contribution of this light
-	outFragColor.rgb += pushConsts.LightColor.rgb * ( SpecularI2.rrr * texture(SamplerGlossivessMap, In.UV).rgb + DiffuseI.rrr * DiffuseColor.rgb );
+	outFragColor.rgb += pushConsts.LightColor.rgb * ( SpecularI2.rrr + DiffuseI.rrr * DiffuseColor.rgb ); 			//( SpecularI2.rrr * texture(SamplerGlossivessMap, In.UV).rgb + DiffuseI.rrr * DiffuseColor.rgb );
 
 	// Convert to gamma
 	const float Gamma = pushConsts.LocalSpaceEyePos.w;

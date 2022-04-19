@@ -58,7 +58,7 @@ namespace VkHelper {
 
     //-------------------------------------------------------------------------------
 
-    std::string && LoadDSS(bitmap& Bitmap, tinyddsloader::DDSFile& Image) noexcept
+    std::string LoadDSS(bitmap& Bitmap, tinyddsloader::DDSFile& Image) noexcept
     {
         using namespace tinyddsloader;
 
@@ -177,7 +177,7 @@ namespace VkHelper {
 
     //-------------------------------------------------------------------------------
 
-    std::string&& LoadDSS(bitmap& Bitmap, const char* pFileName) noexcept
+    std::string LoadDSS(bitmap& Bitmap, const char* pFileName) noexcept
     {
         using namespace tinyddsloader;
 
@@ -193,7 +193,7 @@ namespace VkHelper {
 
     //-------------------------------------------------------------------------------
 
-    std::string&&  LoadDSS(bitmap& Bitmap, std::span<const std::byte> Buffer) noexcept
+    std::string LoadDSS(bitmap& Bitmap, std::span<const std::byte> Buffer) noexcept
     {
         using namespace tinyddsloader;
 

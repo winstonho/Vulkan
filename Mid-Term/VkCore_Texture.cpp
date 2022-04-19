@@ -73,7 +73,7 @@ namespace VkHelper
 		}();
 
 		const auto& Entry = FormatTable[(int)Fmt];
-		if (bLinear)
+		if (bLinear)	
 		{
 			if (bSinged) return Entry.m_VKFormatLinearSigned;
 			return Entry.m_VKFormatLinearUnsigned;
