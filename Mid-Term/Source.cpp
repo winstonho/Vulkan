@@ -428,25 +428,15 @@ private:
        }
 
        gameObj.clear();
-       gameObj.resize(2);
-
-       if (meshlist.size() >= 1)
+       gameObj.resize(meshlist.size());
+       for (int i = 0; i < gameObj.size(); ++i)
        {
-           gameObj[0].model = &meshlist[0];
+           gameObj[i].model = &meshlist[i];
        }
 
-       if (meshlist.size() >= 2)
-       {
-           gameObj[1].model = &meshlist[1];
-       }
+     
 
-       if (meshlist.size() >= 3)
-       {
-           gameObj[2].model = &meshlist[2];
-       }
-
-
-       gameObj[1].transform.translation = glm::vec3(2.0, 2.0, 2.0);
+       //gameObj[1].transform.translation = glm::vec3(2.0, 2.0, 2.0);
 
        camera.Position = glm::vec3(0.0, 0.0, 10.0);
        camera.FOV = 60;
@@ -457,14 +447,13 @@ private:
    {
        //loader.Load("../Resource/obj/cube.obj");
        loader.Load("../Resource/Assets/demon-skull-textured/source/Skull_textured.fbx");
-       loader.Load("../Resource/obj/sphere.obj");
+       //loader.Load("../Resource/obj/sphere.obj");
        //loader.Load("../Resource/Assets/vintage-car/source/_2_Vintage_Car_01_low.fbx");
 
        for (auto& elem : loader.GetAllMesh())
        {
            createVertexBuffer(&elem);
            createIndexBuffer(&elem);
-
        }
 
        if (loader.GetFirstMesh() == nullptr)
@@ -478,10 +467,10 @@ private:
     
    void UpdateGameData()
    {
-       float fixDt = 1.0f / 60.0f;
-       gameObj[1].transform.rotation.x += 0.1f * fixDt;
-       gameObj[1].transform.rotation.y += 0.1f * fixDt;
-       gameObj[1].transform.rotation.z += 0.1f * fixDt;
+       //float fixDt = 1.0f / 60.0f;
+      // gameObj[1].transform.rotation.x += 0.1f * fixDt;
+      // gameObj[1].transform.rotation.y += 0.1f * fixDt;
+      // gameObj[1].transform.rotation.z += 0.1f * fixDt;
 
        camera.setPerspectiveProjection(glm::radians(camera.FOV), swapChainExtent.width / (float)swapChainExtent.height, 0.1, 100.0f);
        camera.setViewYXZ(camera.Position, camera.Rotation);

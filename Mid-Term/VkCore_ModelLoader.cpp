@@ -18,6 +18,19 @@ namespace VkHelper {
             | aiProcess_JoinIdenticalVertices      // join identical vertices/ optimize indexing
             | aiProcess_RemoveRedundantMaterials   // remove redundant materials
             | aiProcess_FindInvalidData            // detect invalid model data, such as invalid normal vectors
+            | aiProcess_FindDegenerates |
+            aiProcess_FindInvalidData |
+            aiProcess_ImproveCacheLocality |
+            aiProcess_JoinIdenticalVertices |
+            aiProcess_OptimizeGraph |
+            aiProcess_OptimizeMeshes |
+            aiProcess_RemoveRedundantMaterials |
+            aiProcess_SortByPType |
+            aiProcess_Triangulate |
+            aiProcess_RemoveComponent |
+            aiProcess_FlipUVs |
+            aiProcess_ValidateDataStructure |
+            aiProcess_MakeLeftHanded
         );
 
         if (pScene == nullptr)
